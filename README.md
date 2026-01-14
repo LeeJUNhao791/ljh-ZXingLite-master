@@ -36,7 +36,7 @@ ZXingLite for Android 是ZXing的精简极速版，基于ZXing库优化扫码和
 
     ```gradle
     implementation 'com.github.jenly1314:zxing-lite:3.3.0'
-
+    
     ```
 
 ### 温馨提示
@@ -216,7 +216,4 @@ dependencies {
 
 #### [查看更多版本日志](CHANGELOG.md)
 
----
-
-![footer](https://jenly1314.github.io/page/footer.svg)
 
