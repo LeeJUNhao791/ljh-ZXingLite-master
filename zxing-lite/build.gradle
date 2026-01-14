@@ -1,0 +1,73 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.dokka'
+    id 'com.vanniktech.maven.publish'
+}
+
+android {
+    namespace 'com.king.zxing'
+    compileSdk build_versions.compileSdk
+
+    defaultConfig {
+        minSdk build_versions.minSdk
+        targetSdk build_versions.targetSdk
+        versionCode 1
+        versionName "1.0.1"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // 注意，打包选择对应的设备类型，然后修改输出文件名
+    /*applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+//                outputFileName = "camera_scan${versionName}_${releaseTime()}_release.apk"
+                if (output.hasProperty('versionName')) {
+                    def versionName = output.versionName
+                }
+            }
+    }*/
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            // 对于 library 项目，可能需要通过 variant 获取版本信息
+            // 例如：variant.versionName (如果已定义)
+            def versionName = android.defaultConfig.versionName ?: "unknown"
+            outputFileName = "camera_scan${versionName}_${releaseTime()}_release.apk"
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+static def releaseTime() {
+    return new Date().format("yyyyMMdd",TimeZone.getTimeZone("UTC"))
+}
+
+dependencies {
+    testImplementation deps.test.junit
+    androidTestImplementation deps.test.android_ext_junit
+    androidTestImplementation deps.test.espresso
+
+    implementation deps.androidx.appcompat
+    api deps.zxing
+
+    api deps.viewfinderview
+    api deps.camera_scan
+
+}
